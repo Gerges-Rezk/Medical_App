@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "950916096154",
+    "project_id": "medicalapp-f56d9",
+    "storage_bucket": "medicalapp-f56d9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950916096154:android:f862de68d1fd0fc4af3f23",
+        "android_client_info": {
+          "package_name": "com.example.medical_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhvkZ-jhwLgWyK4aoAFR3w5JfCfhAnYns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
