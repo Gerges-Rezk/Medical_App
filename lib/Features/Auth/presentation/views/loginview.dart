@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,8 +15,8 @@ import '../widgets/snackbarmessage.dart';
 
 class LoginView extends StatelessWidget {
   String? email;
-  static String id = 'loginView';
   String? password;
+  static String id = 'loginView';
   GlobalKey<FormState> formKey = GlobalKey();
   bool showSpinner = false;
 
@@ -40,68 +42,81 @@ class LoginView extends StatelessWidget {
           backgroundColor: kPrimaryColor,
           body: Form(
             key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 20,
-              children: [
-                Image.asset(AssetsData.splashpic, height: 200, width: 200),
-                Text(
-                  'Medical App',
-                  style: TextStyle(fontSize: 35, color: Colors.white),
-                ),
-                Row(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(top: 100, left: 20, right: 20),
+                child: Column(
+                  spacing: 20,
                   children: [
+                    CircleAvatar(
+                        // make it circular
+                        radius: 100,
+                        backgroundImage: AssetImage(AssetsData.splashpic)),
                     Text(
-                      'Login',
+                      'Medical App',
                       style: TextStyle(fontSize: 35, color: Colors.white),
                     ),
-                  ],
-                ),
-                custom_textField(
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  hint: 'User Name',
-                ),
-                custom_textField(
-                  hint: 'password',
-                  obsecure: true,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                ),
-                CustomButton(
-                  buttonName: 'Login',
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      BlocProvider.of<AuthCubit>(context)
-                          .loginUser(email: email!, password: password!);
-                    }
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Don\'t have an account?',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        GoRouter.of(context).push(AppRouter.kRegisterview);
-                      },
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          color: Colors.white,
+                    Row(
+                      children: [
+                        Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 35,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
+                      ],
                     ),
+                    custom_textField(
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      hint: 'User Name',
+                    ),
+                    custom_textField(
+                      hint: 'password',
+                      obsecure: true,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                      buttonName: 'Login',
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          BlocProvider.of<AuthCubit>(context)
+                              .loginUser(email: email!, password: password!);
+                        }
+                      },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don\'t have an account?',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            GoRouter.of(context).push(AppRouter.kRegisterview);
+                          },
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
+                ),
+              ),
             ),
           ),
         ),
