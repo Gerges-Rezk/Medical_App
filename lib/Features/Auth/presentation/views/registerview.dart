@@ -8,10 +8,16 @@ import 'package:medical_app/constant.dart';
 import 'package:medical_app/core/utils/assets_data.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class Registerview extends StatelessWidget {
-  bool showSpinner = false;
+class Registerview extends StatefulWidget {
   static String id = 'registerView';
-  GlobalKey<FormState> formKey = GlobalKey();
+
+  @override
+  State<Registerview> createState() => _RegisterviewState();
+}
+
+class _RegisterviewState extends State<Registerview> {
+  bool showSpinner = false;
+  final GlobalKey<FormState> formKey = GlobalKey();
   String? email;
   String? password;
 
@@ -20,13 +26,19 @@ class Registerview extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterLoading) {
-          showSpinner = true;
+          setState(() {
+            showSpinner = true;
+          });
         } else if (state is RegisterSuccess) {
-          showSpinner = false;
+          setState(() {
+            showSpinner = false;
+          });
           snackbarMessage(context, 'Register success');
           Navigator.pop(context);
         } else if (state is RegisterFailure) {
-          showSpinner = false;
+          setState(() {
+            showSpinner = false;
+          });
           snackbarMessage(context, state.errorMessage);
         }
       },
@@ -43,74 +55,80 @@ class Registerview extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints:
                           BoxConstraints(minHeight: constraints.maxHeight),
-                      child: IntrinsicHeight(
-                        child: Form(
-                          key: formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 20,
-                              children: [
-                                Spacer(),
-                                Image.asset(
-                                  AssetsData.splashpic,
-                                  height: 200,
-                                  width: 200,
+                      child: Form(
+                        key: formKey,
+                        child: Padding(
+                          padding: const EdgeInsets.only( top: 100, left: 20, right: 20),
+                          child: Column(
+                            spacing: 20,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Center(child: CircleAvatar(radius: 100,backgroundImage: AssetImage(AssetsData.splashpic),)),
+                              Center(
+                                child: const Text(
+                                  'Medical App',
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                                Text('Medical App',
-                                    style: TextStyle(
-                                        fontSize: 35, color: Colors.white)),
-                                Row(
-                                  children: [
-                                    Text('Register',
-                                        style: TextStyle(
-                                            fontSize: 35, color: Colors.white)),
-                                  ],
+                              ),
+                              Text(
+                                'Register',
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                custom_textField(
-                                  hint: 'User Name',
-                                  email: email,
-                                  onChanged: (value) {
-                                    email = value;
-                                  },
-                                ),
-                                custom_textField(
-                                  hint: 'Password',
-                                  onChanged: (value) {
-                                    password = value;
-                                  },
-                                  password: password,
-                                ),
-                                CustomButton(
-                                  buttonName: 'Register',
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      BlocProvider.of<AuthCubit>(context)
-                                          .registerUser(
-                                              email: email!,
-                                              password: password!);
-                                    }
-                                  },
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Already have an account?',
-                                        style: TextStyle(color: Colors.white)),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Login',
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                              ),
+                              custom_textField(
+                                hint: 'User Name',
+                                email: email,
+                                onChanged: (value) {
+                                  email = value;
+                                },
+                              ),
+                              custom_textField(
+                                hint: 'Password',
+                                password: password,
+                                onChanged: (value) {
+                                  password = value;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomButton(
+                                buttonName: 'Register',
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .registerUser(
+                                            email: email!,
+                                            password: password!);
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Already have an account?',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                  ],
-                                ),
-                                Spacer(),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                            ],
                           ),
                         ),
                       ),
